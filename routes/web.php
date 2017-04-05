@@ -12,5 +12,13 @@
 */
 
 $app->get('/', function () use ($app) {
-    return $app->version();
+    return [
+        'ok' => true,
+    ];
+});
+
+$app->get('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app) {
+    Log::debug('request', $request->all());
+
+    return ['bot' => $bot];
 });
