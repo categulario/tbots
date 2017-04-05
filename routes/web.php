@@ -45,11 +45,11 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
                     // ],
                 // ],
 //
-                // 'input_message_content' => [
-                    // 'message_text' => 'message text',
-                    // 'parse_mode' => 'HTML',
-                    // 'disable_web_page_preview' => true,
-                // ],
+                'input_message_content' => [
+                    'message_text' => 'message text',
+                    'parse_mode' => 'HTML',
+                    'disable_web_page_preview' => true,
+                ],
             ];
         }
 
