@@ -20,5 +20,24 @@ $app->get('/', function () use ($app) {
 $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app) {
     Log::debug("request to {$request->url()}", $request->all());
 
-    return ['bot' => $bot];
+    if ($request->input('inline_query')) {
+        return [
+            'method' => 'answerInlineQuery',
+
+            'inline_query_id' => $request->input('inline_query.id'),
+            'results' => [
+                [
+                    'type' => 'photo',
+                    'id' => '1',
+                    'photo_url' => 'https://tbots.categulario.tk/mountain.png',
+                    'thumb_url' => 'https://tbots.categulario.tk/mountain.png',
+                    'title' => 'Cofre de perote',
+                    'description' => 'una linda montaña en veracruz',
+                    'caption' => 'este es el caption',
+                ],
+            ],
+        ];
+    }
+
+    return ['ok' => true];
 });
