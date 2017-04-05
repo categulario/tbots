@@ -32,8 +32,14 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
                     'photo_url' => 'https://tbots.categulario.tk/mountain.png',
                     'thumb_url' => 'https://tbots.categulario.tk/mountain.png',
                     'title' => 'Cofre de perote',
-                    'description' => 'una linda montaña en veracruz',
-                    'caption' => 'este es el caption',
+                    'description' => 'Esta es la descripción',
+                    'caption' => 'Forecast for Cofre de perote',
+
+                    'input_message_content' => [
+                        'message_text' => 'message text',
+                        'parse_mode' => 'HTML',
+                        'disable_web_page_preview' => true,
+                    ],
                 ],
             ],
         ];
