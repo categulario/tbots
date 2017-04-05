@@ -28,10 +28,10 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
             'results' => [
                 [
                     'type' => 'photo',
-                    'id' => '1',
+                    'id' => uniqid(),
                     'photo_url' => 'https://tbots.categulario.tk/mountain.png',
                     'thumb_url' => 'https://tbots.categulario.tk/mountain.png',
-                    'title' => 'Cofre de perote',
+                    'title' => uniqid(),
                     'description' => 'Esta es la descripción',
                     'caption' => 'Forecast for Cofre de perote',
 
