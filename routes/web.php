@@ -35,6 +35,17 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
                     'description' => 'Esta es la descripción',
                     'caption' => 'Forecast for Cofre de perote',
 
+                    'reply_markup' => [
+                        'inline_keyboard' => [
+                            [
+                                'text' => 'foo',
+                            ],
+                            [
+                                'text' => 'var',
+                            ],
+                        ],
+                    ],
+
                     'input_message_content' => [
                         'message_text' => 'message text',
                         'parse_mode' => 'HTML',
