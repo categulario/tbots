@@ -25,6 +25,7 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
             'method' => 'answerInlineQuery',
 
             'inline_query_id' => $request->input('inline_query.id'),
+            'cache_time' => 0,
             'results' => [
                 [
                     'type' => 'photo',
