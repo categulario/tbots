@@ -34,16 +34,16 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
                 'title' => $id,
                 'description' => 'Esta es la descripción',
 
-                'reply_markup' => [
-                    'inline_keyboard' => [
-                        [
-                            'text' => 'foo',
-                        ],
-                        [
-                            'text' => 'var',
-                        ],
-                    ],
-                ],
+                // 'reply_markup' => [
+                    // 'inline_keyboard' => [
+                        // [
+                            // 'text' => 'foo',
+                        // ],
+                        // [
+                            // 'text' => 'var',
+                        // ],
+                    // ],
+                // ],
 
                 'input_message_content' => [
                     'message_text' => 'message text',
