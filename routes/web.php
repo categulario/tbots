@@ -27,13 +27,12 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
             $id = uniqid();
 
             $results[] = [
-                'type' => 'photo',
+                'type' => 'article',
                 'id' => $id,
-                'photo_url' => 'https://tbots.categulario.tk/mountain.png',
+                // 'photo_url' => 'https://tbots.categulario.tk/mountain.png',
                 'thumb_url' => 'https://tbots.categulario.tk/mountain.png',
                 'title' => $id,
                 'description' => 'Esta es la descripción',
-                'caption' => 'Forecast for Cofre de perote',
 
                 // 'reply_markup' => [
                     // 'inline_keyboard' => [
