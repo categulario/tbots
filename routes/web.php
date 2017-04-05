@@ -18,7 +18,7 @@ $app->get('/', function () use ($app) {
 });
 
 $app->get('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app) {
-    Log::debug('request', $request->all());
+    Log::debug("request to {$request->url()}", $request->all());
 
     return ['bot' => $bot];
 });
