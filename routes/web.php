@@ -21,37 +21,23 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
     Log::debug("request to {$request->url()}", $request->all());
 
     if ($request->input('inline_query')) {
-        $results = [];
-
-        for ($i=0; $i<5; $i++) {
-            $id = uniqid();
-
-            $results[] = [
+        $results = collect(json_decode(file_get_contents(__DIR__.'/../resources/datamining/preview.json')))->filter(function ($item) use ($request) {
+            return strpos(strtolower($item->fqn), strtolower($request->input('inline_query.query'))) >= 0;
+        })->map(function ($item) {
+            return [
                 'type' => 'article',
-                'id' => $id,
-                // 'photo_url' => 'https://tbots.categulario.tk/mountain.png',
+                'id' => $item->id,
                 'thumb_url' => 'https://tbots.categulario.tk/mountain.png',
-                'title' => $id,
-                'description' => 'Esta es la descripción',
-
-                // 'reply_markup' => [
-                    // 'inline_keyboard' => [
-                        // [
-                            // 'text' => 'foo',
-                        // ],
-                        // [
-                            // 'text' => 'var',
-                        // ],
-                    // ],
-                // ],
+                'title' => $item->name,
+                'description' => $item->fqn,
 
                 'input_message_content' => [
-                    'message_text' => 'message text',
+                    'message_text' => 'The weather report',
                     'parse_mode' => 'HTML',
                     'disable_web_page_preview' => true,
                 ],
             ];
-        }
+        })->take(20);
 
         return [
             'method' => 'answerInlineQuery',
