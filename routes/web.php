@@ -40,7 +40,7 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
                     'disable_web_page_preview' => false,
                 ],
             ];
-        })->take(20);
+        })->take(20)->values()->toArray();
 
         return [
             'method' => 'answerInlineQuery',
