@@ -21,8 +21,10 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
     Log::debug("request to {$request->url()}", $request->all());
 
     if ($request->input('inline_query')) {
-        $results = collect(json_decode(file_get_contents(__DIR__.'/../resources/datamining/preview.json')))->filter(function ($item) use ($request) {
-            return strpos(strtolower($item->fqn), strtolower($request->input('inline_query.query'))) >= 0;
+        $query = $request->input('inline_query.query');
+
+        $results = collect(json_decode(file_get_contents(__DIR__.'/../resources/datamining/preview.json')))->filter(function ($item) use ($query) {
+            return $query ? strpos(strtolower($item->fqn), strtolower($query)) >= 0 : true;
         })->map(function ($item) {
             return [
                 'type' => 'article',
