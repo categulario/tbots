@@ -12,7 +12,7 @@ if __name__ == '__main__':
     for mrange in data:
         for subrange in mrange['subranges']:
             for location in subrange['locations']:
-                height = red.get('mntn:location:{}:height'.format(location['id']))
+                height = red.get('mntn:location:{}:height'.format(location['id'])).decode('utf8')
 
                 if not height:
                     print('Getting height for {}'.format(location['id']))

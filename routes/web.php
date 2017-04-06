@@ -23,7 +23,7 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
     if ($request->input('inline_query')) {
         $query = $request->input('inline_query.query');
 
-        $results = collect(json_decode(file_get_contents(__DIR__.'/../resources/datamining/preview.json')))->filter(function ($item) use ($query) {
+        $results = collect(json_decode(file_get_contents(__DIR__.'/../resources/datamining/mountains.json')))->filter(function ($item) use ($query) {
             return $query ? strpos(strtolower($item->fqn), strtolower($query)) !== false : true;
         })->map(function ($item) {
             return [
