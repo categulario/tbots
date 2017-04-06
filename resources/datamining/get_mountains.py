@@ -1,9 +1,23 @@
 import json
 import requests
 import logging
+import redis
 from pyquery import PyQuery as pq
 
+def get_cached_locations(b_location_id):
+    location_id = b_location_id.decode('utf8')
+
+    return {
+        'id' : red.get('mntn:locations:{}:value'.format(location_id)).decode('utf8'),
+        'name': red.get('mntn:locations:{}:name'.format(location_id)).decode('utf8'),
+    }
+
 def get_locations(subrange_id):
+    if red.llen('mntn:subrange:{}:locations'.format(subrange_id)):
+        print('Using cached subrange {}'.format(subrange_id))
+
+        return list(map(get_cached_locations, red.lrange('mntn:subrange:{}:locations'.format(subrange_id), 0, -1)))
+
     print('Requesting locations for {}'.format(subrange_id))
 
     r = requests.get('https://www.mountain-forecast.com/subranges/{}/locations.js'.format(subrange_id), headers = {
@@ -14,6 +28,10 @@ def get_locations(subrange_id):
     options = d('#location_filename_part').children()
 
     def get_options(option):
+        red.rpush('mntn:subrange:{}:locations'.format(subrange_id), option.attrib['value'])
+        red.set('mntn:locations:{}:value'.format(option.attrib['value']), option.attrib['value'])
+        red.set('mntn:locations:{}:name'.format(option.attrib['value']), option.text)
+
         return {
             'id' : option.attrib['value'],
             'name' : option.text,
@@ -21,7 +39,7 @@ def get_locations(subrange_id):
 
     return list(map(get_options, options))
 
-def get_subranges(range_id):
+def get_subranges(range_id, range_name):
     print('Requesting subranges for {}'.format(range_id))
 
     r = requests.get('https://www.mountain-forecast.com/mountain_ranges/{}/subranges.js'.format(range_id), headers = {
@@ -30,6 +48,25 @@ def get_subranges(range_id):
     d = pq(r.text)
 
     options = d('#subrange_id').children()
+
+    if len(options) == 0:
+        def get_location_options(option):
+            red.rpush('mntn:subrange:{}:locations'.format(range_id), option.attrib['value'])
+            red.set('mntn:locations:{}:value'.format(option.attrib['value']), option.attrib['value'])
+            red.set('mntn:locations:{}:name'.format(option.attrib['value']), option.text)
+
+            return {
+                'id' : option.attrib['value'],
+                'name' : option.text,
+            }
+
+        options = d('#location_filename_part').children()
+
+        return [{
+            'id' : range_id,
+            'name' : range_name,
+            'locations': list(map(get_location_options, options)),
+        }]
 
     def get_options(option):
         return {
@@ -47,7 +84,7 @@ def get_ranges():
         for line in rangesfile:
             range_id, range_name = line.strip().split('\t')
 
-            subranges = get_subranges(range_id)
+            subranges = get_subranges(range_id, range_name)
 
             range_data = {
                 'id' : range_id,
@@ -61,7 +98,9 @@ def get_ranges():
 
 
 if __name__ == '__main__':
-    # json.dump(get_ranges(), open('ranges.json', 'w'), indent=2)
-    # json.dump(get_subranges('mexican-ranges'), open('ranges.json', 'w'), indent=2)
-    # print(get_subranges('mexican-ranges'))
-    print(get_locations('sierra-madre-oriental'))
+    red = redis.StrictRedis()
+
+    json.dump(get_ranges(), open('ranges.json', 'w'), indent=2)
+
+    # print(get_subranges('alborz', 'Alborz'))
+    # print(get_locations('sierra-madre-oriental'))
