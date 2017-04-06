@@ -24,7 +24,7 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
         $query = $request->input('inline_query.query');
 
         $results = collect(json_decode(file_get_contents(__DIR__.'/../resources/datamining/preview.json')))->filter(function ($item) use ($query) {
-            return $query ? strpos(strtolower($item->fqn), strtolower($query)) >= 0 : true;
+            return $query ? strpos(strtolower($item->fqn), strtolower($query)) !== false : true;
         })->map(function ($item) {
             return [
                 'type' => 'article',
