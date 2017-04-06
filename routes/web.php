@@ -35,7 +35,7 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
 
                 'input_message_content' => [
                     // 'message_text' => "<b>{$item->fqn}</b><br><a href=\"https://www.mountain-forecast.com/peaks/{$item->id}/forecasts/{$item->height}\">{$item->name}</a>",
-                    'message_text' => "Forecast for <b>".$item->fqn."</b>",
+                    'message_text' => "Forecast for <b>".$item->fqn."</b> <a href=\"https://www.mountain-forecast.com/peaks/{$item->id}/forecasts/{$item->height}\">here</a>",
                     'parse_mode' => 'HTML',
                     'disable_web_page_preview' => false,
                 ],
