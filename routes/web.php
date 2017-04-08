@@ -49,6 +49,11 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
             'cache_time' => 0,
             'results' => $results,
         ];
+    } elseif ($request->input('message')) {
+        return [
+            'chat_id' => $request->input('message.chat.id'),
+            'text'    => 'Si, puedo responder',
+        ];
     }
 
     return ['ok' => true];
