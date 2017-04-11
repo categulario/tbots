@@ -51,9 +51,25 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
         ];
     } elseif ($request->input('message')) {
         return [
-            'method'  => 'sendMessage',
-            'chat_id' => $request->input('message.chat.id'),
-            'text'    => 'Si, puedo responder',
+            'method'       => 'sendMessage',
+            'chat_id'      => $request->input('message.chat.id'),
+            'text'         => 'Si, puedo responder',
+            'reply_markup' => [
+                'inline_keyboard' => [[
+                    [
+                        'text' => 'adrian',
+                        'callback_data'  => 'popo',
+                    ],
+                    [
+                        'text' => 'alan',
+                        'callback_data'  => 'izta',
+                    ],
+                ],
+            ]],
+        ];
+    } elseif ($request->input('callback_query')) {
+        return [
+            'method' => 'answerCallbackQuery',
         ];
     }
 
