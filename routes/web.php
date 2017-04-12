@@ -103,6 +103,8 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
                 ],
             ];
         } elseif (starts_with($callback_data, 'height')) {
+            dispatch(new GetForecast($peak->id, $peak->height));
+
             return [
                 'method'       => 'editMessageText',
 
@@ -113,13 +115,6 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
                 'reply_markup' => [
                     'inline_keyboard' => [],
                 ],
-            ];
-            return [
-                'method' => 'sendPhoto',
-
-                'chat_id' => $request->input('callback_query.message.chat.id'),
-                'photo' => 'https://tbots.categulario.tk/mountain.png',
-                'caption' => 'The forecast',
             ];
         }
     }
