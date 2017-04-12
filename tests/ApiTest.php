@@ -39,7 +39,7 @@ class ApiTest extends TestCase
                         'type' => 'article',
                         'id' => 'Avalanche-Spire',
                         'thumb_url' => 'https://tbots.categulario.tk/mountain.png',
-                        'title' => 'Avalanche-Spire',
+                        'title' => 'Avalanche Spire',
                         'description' => 'Alaska/Yukon Ranges > Alaska Range > Avalanche Spire',
                         'input_message_content' => [
                             'message_text' => "Forecast for <b>Alaska/Yukon Ranges > Alaska Range > Avalanche Spire</b> <a href=\"https://www.mountain-forecast.com/peaks/Avalanche-Spire/forecasts/2905\">here</a>",

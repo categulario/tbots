@@ -68,7 +68,7 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
         return [
             'method'       => 'sendMessage',
             'chat_id'      => $request->input('message.chat.id'),
-            'text'         => 'Mountains containing the text *Avalanche*',
+            'text'         => "Mountains containing the text *$query*",
             'parse_mode'   => 'Markdown',
             'reply_markup' => [
                 'inline_keyboard' => $results,
