@@ -75,8 +75,13 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
             ],
         ];
     } elseif ($request->input('callback_query')) {
+        $data = $request->input('callback_query.data');
+
         return [
             'method' => 'answerCallbackQuery',
+
+            'callback_query_id' => $request->input('callback_query.id'),
+            'text' => 'it depends',
         ];
     }
 
