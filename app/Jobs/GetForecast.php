@@ -10,15 +10,18 @@ class GetForecast extends Job
 
     public $height;
 
+    public $chat_id;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($peak, $height)
+    public function __construct($peak, $height, $chat_id)
     {
         $this->peak = $peak;
         $this->height = $height;
+        $this->chat_id = $chat_id;
     }
 
     /**
@@ -29,15 +32,15 @@ class GetForecast extends Job
     public function handle()
     {
         $client = new Client([
-            'base_uri' => 'https://api.telegram.org/bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11/',
+            'base_uri' => 'https://api.telegram.org/bot'.config('mntnwttrbot.key').'/',
         ]);
 
         $response = $client->request('POST', 'sendPhoto', [
             'json' => [
                 'method' => 'sendPhoto',
 
-                'chat_id' => $request->input('callback_query.message.chat.id'),
-                'photo' => 'https://tbots.categulario.tk/mountain.png',
+                'chat_id' => $this->chat_id,
+                'photo'   => 'https://tbots.categulario.tk/mountain.png',
                 'caption' => 'The forecast',
             ],
         ]);

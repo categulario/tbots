@@ -103,7 +103,7 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
                 ],
             ];
         } elseif (starts_with($callback_data, 'height')) {
-            dispatch(new GetForecast($peak->id, $peak->height));
+            dispatch(new App\Jobs\GetForecast($peak->id, $peak->height, $request->input('callback_query.message.chat.id')));
 
             return [
                 'method'       => 'editMessageText',
