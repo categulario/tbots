@@ -35,6 +35,16 @@ class GetForecast extends Job
             return;
         }
 
+        $output = shell_exec(implode(' ', [
+            'phantomjs',
+            base_path().'/resources/capture/capture.js',
+            $this->peak,
+            $this->height,
+            base_path().'/public/forecasts/',
+        ]));
+
+        $filename = trim($output);
+
         $client = new Client([
             'base_uri' => 'https://api.telegram.org/bot'.config('mntnwttrbot.key').'/',
         ]);
@@ -44,7 +54,7 @@ class GetForecast extends Job
                 'method' => 'sendPhoto',
 
                 'chat_id' => $this->chat_id,
-                'photo'   => 'https://tbots.categulario.tk/mountain.png',
+                'photo'   => 'https://tbots.categulario.tk/forecasts/'.$filename.'?'.time(),
                 'caption' => 'The forecast',
             ],
         ]);
