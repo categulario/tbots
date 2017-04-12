@@ -86,8 +86,9 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
             ]]];
 
             return [
-                'method'       => 'sendMessage',
+                'method'       => 'editMessageText',
                 'chat_id'      => $request->input('callback_query.message.chat.id'),
+                'message_id'   => $request->input('callback_query.message.message_id'),
                 'text'         => "Available heights for *{$peak->name}*",
                 'parse_mode'   => 'Markdown',
                 'reply_markup' => [
