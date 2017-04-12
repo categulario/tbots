@@ -1,0 +1,20 @@
+[
+    {
+        "id": "Avalanche-Spire",
+        "name": "Avalanche Spire",
+        "fqn": "Alaska/Yukon Ranges > Alaska Range > Avalanche Spire",
+        "height": "2905"
+    },
+    {
+        "id": "Fang-Mountain",
+        "name": "Fang Mountain",
+        "fqn": "Alaska/Yukon Ranges > Alaska Range > Fang Mountain",
+        "height": "2053"
+    },
+    {
+        "id": "Middle-Triple-Peak",
+        "name": "Middle Triple Peak",
+        "fqn": "Alaska/Yukon Ranges > Alaska Range > Middle Triple Peak",
+        "height": "2693"
+    }
+]

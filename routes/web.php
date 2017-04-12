@@ -23,9 +23,7 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
     if ($request->input('inline_query')) {
         $query = $request->input('inline_query.query');
 
-        $results = collect(json_decode(file_get_contents(__DIR__.'/../resources/datamining/mountains.json')))->filter(function ($item) use ($query) {
-            return $query ? strpos(strtolower($item->fqn), strtolower($query)) !== false : true;
-        })->map(function ($item) {
+        $results = App\Query::search($query)->map(function ($item) {
             return [
                 'type' => 'article',
                 'id' => $item->id,
@@ -34,7 +32,6 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
                 'description' => $item->fqn,
 
                 'input_message_content' => [
-                    // 'message_text' => "<b>{$item->fqn}</b><br><a href=\"https://www.mountain-forecast.com/peaks/{$item->id}/forecasts/{$item->height}\">{$item->name}</a>",
                     'message_text' => "Forecast for <b>".$item->fqn."</b> <a href=\"https://www.mountain-forecast.com/peaks/{$item->id}/forecasts/{$item->height}\">here</a>",
                     'parse_mode' => 'HTML',
                     'disable_web_page_preview' => false,
@@ -50,22 +47,32 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
             'results' => $results,
         ];
     } elseif ($request->input('message')) {
+        $query = $request->input('message.text');
+
+        $results = App\Query::search($query)->map(function ($item) {
+            return [[
+                'text' => $item->name,
+                'callback_data' => $item->id,
+            ]];
+        })->take(5)->values()->toArray();
+
+        if (count($results) == 0) {
+            return [
+                'method'       => 'sendMessage',
+                'chat_id'      => $request->input('message.chat.id'),
+                'text'         => "Can't find any mountain containing the text *$query*",
+                'parse_mode'   => 'Markdown',
+            ];
+        }
+
         return [
             'method'       => 'sendMessage',
             'chat_id'      => $request->input('message.chat.id'),
-            'text'         => 'Si, puedo responder',
+            'text'         => 'Mountains containing the text *Avalanche*',
+            'parse_mode'   => 'Markdown',
             'reply_markup' => [
-                'inline_keyboard' => [[
-                    [
-                        'text' => 'adrian',
-                        'callback_data'  => 'popo',
-                    ],
-                    [
-                        'text' => 'alan',
-                        'callback_data'  => 'izta',
-                    ],
-                ],
-            ]],
+                'inline_keyboard' => $results,
+            ],
         ];
     } elseif ($request->input('callback_query')) {
         return [

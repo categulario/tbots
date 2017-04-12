@@ -1,0 +1,21 @@
+{
+    "update_id": 725286431,
+    "message": {
+        "message_id": 21,
+        "from": {
+            "id": 62198042,
+            "first_name": "Abraham",
+            "last_name": "Toriz Cruz",
+            "username": "categulario"
+        },
+        "chat": {
+            "id": 62198042,
+            "first_name": "Abraham",
+            "last_name": "Toriz Cruz",
+            "username": "categulario",
+            "type": "private"
+        },
+        "date": 1491926391,
+        "text": "query"
+    }
+}
