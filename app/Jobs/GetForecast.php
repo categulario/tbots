@@ -31,6 +31,10 @@ class GetForecast extends Job
      */
     public function handle()
     {
+        if (app()->environment() == 'testing') {
+            return;
+        }
+
         $client = new Client([
             'base_uri' => 'https://api.telegram.org/bot'.config('mntnwttrbot.key').'/',
         ]);
