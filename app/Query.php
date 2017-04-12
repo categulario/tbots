@@ -14,4 +14,13 @@ class Query
             return $query ? strpos(strtolower($item->fqn), strtolower($query)) !== false : true;
         });
     }
+
+    public static function find($peak)
+    {
+        return collect(
+            json_decode(
+                file_get_contents(__DIR__.'/../'.config('mntnwttrbot.data'))
+            )
+        )->where('id', $peak)->first();
+    }
 }

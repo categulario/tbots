@@ -52,7 +52,7 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
         $results = App\Query::search($query)->map(function ($item) {
             return [[
                 'text' => $item->name,
-                'callback_data' => $item->id,
+                'callback_data' => 'mountain:'.$item->id,
             ]];
         })->take(5)->values()->toArray();
 
@@ -77,12 +77,24 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
     } elseif ($request->input('callback_query')) {
         $data = $request->input('callback_query.data');
 
-        return [
-            'method' => 'answerCallbackQuery',
+        if (starts_with($data, 'mountain')) {
+            $peak = App\Query::find(explode(':', $data)[1]);
 
-            'callback_query_id' => $request->input('callback_query.id'),
-            'text' => 'it depends',
-        ];
+            $heights = [[[
+                'text' => 'Summit ('.$peak->height.')',
+                'callback_data' => 'height:'.$peak->height.',mountain:'.$peak->id,
+            ]]];
+
+            return [
+                'method'       => 'sendMessage',
+                'chat_id'      => $request->input('callback_query.message.chat.id'),
+                'text'         => "Available heights for *{$peak->name}*",
+                'parse_mode'   => 'Markdown',
+                'reply_markup' => [
+                    'inline_keyboard' => $heights,
+                ],
+            ];
+        }
     }
 
     return ['ok' => true];
