@@ -87,6 +87,7 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
 
             return [
                 'method'       => 'editMessageText',
+
                 'chat_id'      => $request->input('callback_query.message.chat.id'),
                 'message_id'   => $request->input('callback_query.message.message_id'),
                 'text'         => "Available heights for *{$peak->name}*",
@@ -94,6 +95,14 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
                 'reply_markup' => [
                     'inline_keyboard' => $heights,
                 ],
+            ];
+        } elseif (starts_with($data, 'height')) {
+            return [
+                'method' => 'sendPhoto',
+
+                'chat_id' => $request->input('callback_query.message.chat.id'),
+                'photo' => 'https://tbots.categulario.tk/mountain.png',
+                'caption' => 'The forecast',
             ];
         }
     }
