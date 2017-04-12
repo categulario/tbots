@@ -152,7 +152,8 @@ class ApiTest extends TestCase
                 "data" => "mountain:Avalanche-Spire"
             ]
         ])->seeJsonEquals([
-            'method'       => 'sendMessage',
+            'method'       => 'editMessageText',
+            'message_id'   => 22,
             'chat_id'      => 62198042,
             'text'         => "Available heights for *Avalanche Spire*",
             'parse_mode'   => 'Markdown',
@@ -163,6 +164,50 @@ class ApiTest extends TestCase
                         'callback_data'  => 'height:2905,mountain:Avalanche-Spire',
                     ]],
                 ],
+            ],
+        ]);
+    }
+
+    public function testCallbackDataHeight()
+    {
+        $this->post('/bot', [
+            "update_id" => 725286432,
+            "callback_query" => [
+                "id" => "267138556421820874",
+                "from" => [
+                    "id" => 62198042,
+                    "first_name" => "Abraham",
+                    "last_name" => "Toriz Cruz",
+                    "username" => "categulario"
+                ],
+                "message" => [
+                    "message_id" => 22,
+                    "from" => [
+                        "id" => 317868014,
+                        "first_name" => "mntnwttrbot",
+                        "username" => "mntnwttrbot"
+                    ],
+                    "chat" => [
+                        "id" => 62198042,
+                        "first_name" => "Abraham",
+                        "last_name" => "Toriz Cruz",
+                        "username" => "categulario",
+                        "type" => "private"
+                    ],
+                    "date" => 1491926392,
+                    "text" => "Si, puedo responder"
+                ],
+                "chat_instance" => "4784830299483813229",
+                "data" => "height:2905,mountain:Avalanche-Spire"
+            ]
+        ])->seeJsonEquals([
+            'method'       => 'editMessageText',
+            'message_id'   => 22,
+            'chat_id'      => 62198042,
+            'text'         => "The forecast for *Avalanche Spire* is almost ready",
+            'parse_mode'   => 'Markdown',
+            'reply_markup' => [
+                'inline_keyboard' => [],
             ],
         ]);
     }

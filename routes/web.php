@@ -75,11 +75,17 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
             ],
         ];
     } elseif ($request->input('callback_query')) {
-        $data = $request->input('callback_query.data');
+        $callback_data = $request->input('callback_query.data');
+        $data = [];
 
-        if (starts_with($data, 'mountain')) {
-            $peak = App\Query::find(explode(':', $data)[1]);
+        foreach (explode(',', $callback_data) as $piece) {
+            $parts = explode(':', $piece);
+            $data[$parts[0]] = $parts[1];
+        }
 
+        $peak = App\Query::find($data['mountain']);
+
+        if (starts_with($callback_data, 'mountain')) {
             $heights = [[[
                 'text' => 'Summit ('.$peak->height.')',
                 'callback_data' => 'height:'.$peak->height.',mountain:'.$peak->id,
@@ -96,7 +102,18 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
                     'inline_keyboard' => $heights,
                 ],
             ];
-        } elseif (starts_with($data, 'height')) {
+        } elseif (starts_with($callback_data, 'height')) {
+            return [
+                'method'       => 'editMessageText',
+
+                'chat_id'      => $request->input('callback_query.message.chat.id'),
+                'message_id'   => $request->input('callback_query.message.message_id'),
+                'text'         => "The forecast for *".$peak->name.'* is almost ready',
+                'parse_mode'   => 'Markdown',
+                'reply_markup' => [
+                    'inline_keyboard' => [],
+                ],
+            ];
             return [
                 'method' => 'sendPhoto',
 
