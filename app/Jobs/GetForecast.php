@@ -38,7 +38,7 @@ class GetForecast extends Job
         }
 
         $output = shell_exec(implode(' ', [
-            'phantomjs',
+            '/home/categulario/.local/bin/phantomjs',
             base_path().'/resources/capture/capture.js',
             $this->peak,
             $this->height,
@@ -53,8 +53,6 @@ class GetForecast extends Job
 
         try {
             $photo_url = 'https://tbots.categulario.tk/forecasts/'.$filename.'?'.time();
-
-            Log::debug($photo_url);
 
             $response = $client->request('POST', 'sendPhoto', [
                 'json' => [
