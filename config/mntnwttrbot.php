@@ -6,4 +6,6 @@ return [
 
     'data' => env('MNTN_DATA', 'resources/datamining/mountains.json'),
 
+    'phantomjs' => env('PHANTOMJS', '/usr/bin/phantomjs'),
+
 ];

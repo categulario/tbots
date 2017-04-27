@@ -38,7 +38,7 @@ class GetForecast extends Job
         }
 
         $output = shell_exec(implode(' ', [
-            '/home/categulario/.local/bin/phantomjs',
+            config('mntnwttrbot.phantomjs'),
             base_path().'/resources/capture/capture.js',
             $this->peak,
             $this->height,
