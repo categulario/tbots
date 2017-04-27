@@ -10,15 +10,23 @@ page.viewportSize = {
 	height: 768,
 };
 
-page.clipRect = {
-	top: 775,
-	left: 30,
-	width: 770,
-	height: 912,
-};
-
 page.open('https://www.mountain-forecast.com/peaks/'+peak+'/forecasts/'+height, function() {
-	var filename = peak + '.png';
+	var filename = 'mountain.png';
+
+	var dimensions = page.evaluate(function () {
+		document.getElementById('metricradio').click();
+
+		var table = document.getElementsByClassName('forecasts')[0];
+
+		return {
+			width: table.offsetWidth,
+			height: table.offsetHeight,
+			top: table.getBoundingClientRect().top,
+			left: table.offsetLeft,
+		};
+	});
+
+	page.clipRect = dimensions;
 
 	page.render(path + filename);
 	console.log(filename);
