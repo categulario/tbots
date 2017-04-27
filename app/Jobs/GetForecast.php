@@ -3,6 +3,8 @@
 namespace App\Jobs;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use Log;
 
 class GetForecast extends Job
 {
@@ -49,14 +51,22 @@ class GetForecast extends Job
             'base_uri' => 'https://api.telegram.org/bot'.config('mntnwttrbot.key').'/',
         ]);
 
-        $response = $client->request('POST', 'sendPhoto', [
-            'json' => [
-                'method' => 'sendPhoto',
+        try {
+            $photo_url = 'https://tbots.categulario.tk/forecasts/'.$filename.'?'.time();
 
-                'chat_id' => $this->chat_id,
-                'photo'   => 'https://tbots.categulario.tk/forecasts/'.$filename.'?'.time(),
-                'caption' => 'The forecast',
-            ],
-        ]);
+            Log::debug($photo_url);
+
+            $response = $client->request('POST', 'sendPhoto', [
+                'json' => [
+                    'method' => 'sendPhoto',
+
+                    'chat_id' => $this->chat_id,
+                    'photo'   => $photo_url,
+                    'caption' => 'The forecast',
+                ],
+            ]);
+        } catch (ClientException $e) {
+            Log::debug($e);
+        }
     }
 }
