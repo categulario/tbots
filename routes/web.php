@@ -18,8 +18,6 @@ $app->get('/', function () use ($app) {
 });
 
 $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app) {
-    Log::debug("request to {$request->url()}", $request->all());
-
     if ($request->input('inline_query')) {
         $query = $request->input('inline_query.query');
 
@@ -123,6 +121,10 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
             ];
         } elseif (starts_with($callback_data, 'height')) {
             dispatch(new App\Jobs\GetForecast($peak->id, $peak->height, $request->input('callback_query.message.chat.id')));
+
+            $user = $request->input('callback_query.from.first_name');
+
+            Log::debug("User {$user} requested forecast for {$peak->height} of {$peak->id}");
 
             return [
                 'method'       => 'editMessageText',
