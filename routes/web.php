@@ -86,10 +86,29 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
         $peak = App\Query::find($data['mountain']);
 
         if (starts_with($callback_data, 'mountain')) {
-            $heights = [[[
-                'text' => 'Summit ('.$peak->height.')',
-                'callback_data' => 'height:'.$peak->height.',mountain:'.$peak->id,
-            ]]];
+            $h = 0;
+            $height = $peak->height;
+            $heights = [];
+
+            while ($h < 5 && $height >= 0) {
+                $heights[] = [[
+                    'text' => $h == 0 ? 'Summit ('.$height.')' : (string)$height,
+                    'callback_data' => 'height:'.$height.',mountain:'.$peak->id,
+                ]];
+
+                if ($h == 0) {
+                    $nh = ((int)($height/500))*500;
+
+                    if ($nh == $height) {
+                        $nh = $height - 500;
+                    }
+                    $height = $nh;
+                } else {
+                    $height -= 500;
+                }
+
+                $h++;
+            }
 
             return [
                 'method'       => 'editMessageText',

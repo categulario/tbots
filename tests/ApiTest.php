@@ -163,6 +163,22 @@ class ApiTest extends TestCase
                         'text' => 'Summit (2905)',
                         'callback_data'  => 'height:2905,mountain:Avalanche-Spire',
                     ]],
+                    [[
+                        'text' => '2500',
+                        'callback_data'  => 'height:2500,mountain:Avalanche-Spire',
+                    ]],
+                    [[
+                        'text' => '2000',
+                        'callback_data'  => 'height:2000,mountain:Avalanche-Spire',
+                    ]],
+                    [[
+                        'text' => '1500',
+                        'callback_data'  => 'height:1500,mountain:Avalanche-Spire',
+                    ]],
+                    [[
+                        'text' => '1000',
+                        'callback_data'  => 'height:1000,mountain:Avalanche-Spire',
+                    ]],
                 ],
             ],
         ]);
