@@ -84,27 +84,35 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
         $peak = App\Query::find($data['mountain']);
 
         if (starts_with($callback_data, 'mountain')) {
+            $heights = [
+                [[
+                    'text' => 'Summit ('.$peak->height.')',
+                    'callback_data' => 'height:'.$peak->height.',mountain:'.$peak->id,
+                ]]
+            ];
+
+            $nh = ((int)($peak->height/250))*250;
+
+            if ($nh == $peak->height) {
+                $nh = $peak->height - 250;
+            }
+            $height = $nh;
             $h = 0;
-            $height = $peak->height;
-            $heights = [];
 
-            while ($h < 5 && $height >= 0) {
-                $heights[] = [[
-                    'text' => $h == 0 ? 'Summit ('.$height.')' : (string)$height,
-                    'callback_data' => 'height:'.$height.',mountain:'.$peak->id,
-                ]];
+            while ($h < 4 && $height >= 0) {
+                $hrow = [];
 
-                if ($h == 0) {
-                    $nh = ((int)($height/500))*500;
-
-                    if ($nh == $height) {
-                        $nh = $height - 500;
-                    }
-                    $height = $nh;
-                } else {
-                    $height -= 500;
+                $i = 0;
+                while ($i<2 && $height >= 0) {
+                    $hrow[] = [
+                        'text' => (string)$height,
+                        'callback_data' => 'height:'.$height.',mountain:'.$peak->id,
+                    ];
+                    $height -= 250;
+                    $i++;
                 }
 
+                $heights[] = $hrow;
                 $h++;
             }
 

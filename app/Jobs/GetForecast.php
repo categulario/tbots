@@ -60,7 +60,7 @@ class GetForecast extends Job
 
                     'chat_id' => $this->chat_id,
                     'photo'   => $photo_url,
-                    'caption' => $this->peak.' at '.$this->height.'m forecast',
+                    'caption' => 'Forecast for '.$this->peak.' at '.$this->height.'m',
                 ],
             ]);
         } catch (ClientException $e) {
