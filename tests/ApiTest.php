@@ -220,7 +220,7 @@ class ApiTest extends TestCase
             'method'       => 'editMessageText',
             'message_id'   => 22,
             'chat_id'      => 62198042,
-            'text'         => "The forecast for *Avalanche Spire* is almost ready",
+            'text'         => "The forecast at 2905m for *Avalanche Spire* is almost ready",
             'parse_mode'   => 'Markdown',
             'reply_markup' => [
                 'inline_keyboard' => [],

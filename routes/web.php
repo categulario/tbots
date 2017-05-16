@@ -120,7 +120,9 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
                 ],
             ];
         } elseif (starts_with($callback_data, 'height')) {
-            dispatch(new App\Jobs\GetForecast($peak->id, $peak->height, $request->input('callback_query.message.chat.id')));
+            $height = explode(':', explode(',', $callback_data)[0])[1];
+
+            dispatch(new App\Jobs\GetForecast($peak->id, $height, $request->input('callback_query.message.chat.id')));
 
             $user = $request->input('callback_query.from.first_name');
 
@@ -131,7 +133,7 @@ $app->post('/{bot}', function (Illuminate\Http\Request $request, $bot) use ($app
 
                 'chat_id'      => $request->input('callback_query.message.chat.id'),
                 'message_id'   => $request->input('callback_query.message.message_id'),
-                'text'         => "The forecast for *".$peak->name.'* is almost ready',
+                'text'         => "The forecast at {$height}m for *".$peak->name.'* is almost ready',
                 'parse_mode'   => 'Markdown',
                 'reply_markup' => [
                     'inline_keyboard' => [],
