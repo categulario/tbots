@@ -9,7 +9,7 @@ return [
 
     'mntnwttrbot' => [
 
-        'token' => env('MNTNWTTRBOT_TOKEN', 'mntnwttrtoken'),
+        'token' => env('MNTN_TOKEN', 'mntnwttrtoken'),
         'data' => env('MNTN_DATA', 'resources/datamining/mountains.json'),
         'phantomjs' => env('PHANTOMJS', '/usr/bin/phantomjs'),
 
