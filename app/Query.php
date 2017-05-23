@@ -8,7 +8,7 @@ class Query
     {
         return collect(
             json_decode(
-                file_get_contents(__DIR__.'/../'.config('mntnwttrbot.data'))
+                file_get_contents(__DIR__.'/../'.config('bots.mntnwttrbot.data'))
             )
         )->filter(function ($item) use ($query) {
             return $query ? strpos(strtolower($item->fqn), strtolower($query)) !== false : true;
@@ -19,7 +19,7 @@ class Query
     {
         return collect(
             json_decode(
-                file_get_contents(__DIR__.'/../'.config('mntnwttrbot.data'))
+                file_get_contents(__DIR__.'/../'.config('bots.mntnwttrbot.data'))
             )
         )->where('id', $peak)->first();
     }

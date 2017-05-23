@@ -38,7 +38,7 @@ class GetForecast extends Job
         }
 
         $output = shell_exec(implode(' ', [
-            config('mntnwttrbot.phantomjs'),
+            config('bots.mntnwttrbot.phantomjs'),
             base_path().'/resources/capture/capture.js',
             $this->peak,
             $this->height,
@@ -48,7 +48,7 @@ class GetForecast extends Job
         $filename = trim($output);
 
         $client = new Client([
-            'base_uri' => 'https://api.telegram.org/bot'.config('mntnwttrbot.key').'/',
+            'base_uri' => 'https://api.telegram.org/bot'.config('bots.mntnwttrbot.token').'/',
         ]);
 
         try {

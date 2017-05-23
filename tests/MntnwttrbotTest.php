@@ -1,24 +1,10 @@
 <?php
 
-class ApiTest extends TestCase
+class MntnwttrbotTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testIndexPage()
-    {
-        $this->get('/');
-
-        $this->assertEquals(
-            '{"ok":true}', $this->response->getContent()
-        );
-    }
-
     public function testInlineQuery()
     {
-        $this->post('/bot', [
+        $this->post('/mntnwttrtoken', [
             "update_id" => 725286433,
             "inline_query" => [
                 "id" => "267138557323649014",
@@ -53,7 +39,7 @@ class ApiTest extends TestCase
 
     public function testMessage()
     {
-        $this->post('/bot', [
+        $this->post('/mntnwttrtoken', [
             "update_id" => 725286431,
             "message" => [
                 "message_id" => 21,
@@ -91,7 +77,7 @@ class ApiTest extends TestCase
 
     public function testMessageMntnNotFound()
     {
-        $this->post('/bot', [
+        $this->post('/mntnwttrtoken', [
             "update_id" => 725286431,
             "message" => [
                 "message_id" => 21,
@@ -121,7 +107,7 @@ class ApiTest extends TestCase
 
     public function testCallbackDataMntn()
     {
-        $this->post('/bot', [
+        $this->post('/mntnwttrtoken', [
             "update_id" => 725286432,
             "callback_query" => [
                 "id" => "267138556421820874",
@@ -210,7 +196,7 @@ class ApiTest extends TestCase
 
     public function testCallbackDataHeight()
     {
-        $this->post('/bot', [
+        $this->post('/mntnwttrtoken', [
             "update_id" => 725286432,
             "callback_query" => [
                 "id" => "267138556421820874",
@@ -247,7 +233,14 @@ class ApiTest extends TestCase
             'text'         => "The forecast at 2905m for *Avalanche Spire* is almost ready",
             'parse_mode'   => 'Markdown',
             'reply_markup' => [
-                'inline_keyboard' => [],
+                'inline_keyboard' => [
+                    [
+                        [
+                            'callback_data' => 'var',
+                            'text' => 'foo',
+                        ],
+                    ],
+                ],
             ],
         ]);
     }

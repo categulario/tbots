@@ -67,6 +67,10 @@ $app->singleton(
 //     'auth' => App\Http\Middleware\Authenticate::class,
 // ]);
 
+$app->routeMiddleware([
+    'bots' => App\Http\Middleware\ChooseBotMiddleware::class,
+]);
+
 /*
 |--------------------------------------------------------------------------
 | Register Service Providers
@@ -81,6 +85,7 @@ $app->singleton(
 // $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+$app->register(App\Providers\BotServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -97,6 +102,6 @@ $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
     require __DIR__.'/../routes/web.php';
 });
 
-$app->configure('mntnwttrbot');
+$app->configure('bots');
 
 return $app;
