@@ -54,7 +54,7 @@ class Eqxbot extends Bot
             ];
         }
 
-        $imagedata = shell_exec("/usr/bin/convert -density 300 -quality 100 pdf:$texfilename.pdf png:-");
+        $imagedata = shell_exec("/usr/bin/convert -density 300 -quality 100 -flatten pdf:$texfilename.pdf png:-");
 
         $pngname = basename($texfilename).'.png';
 
@@ -67,7 +67,7 @@ class Eqxbot extends Bot
             'cache_time' => 300,
             'results' => [
                 [
-                    'type' => 'article',
+                    'type' => 'photo',
                     'id' => basename($texfilename),
                     'photo_url' => 'https://tbots.categulario.tk/latex/'.$pngname,
                     'thumb_url' => 'https://tbots.categulario.tk/latex/'.$pngname,
