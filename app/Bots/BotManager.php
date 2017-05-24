@@ -14,9 +14,6 @@ class BotManager
             $botname = strtolower(explode('\\', $botclass)[2]);
             $bot = new $botclass(config("bots.$botname.token"));
 
-            Log::debug($botname);
-            Log::debug($bot->token);
-
             $this->bots[$bot->token] = $bot;
         }
     }
