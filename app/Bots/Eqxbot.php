@@ -13,16 +13,15 @@ class Eqxbot extends Bot
         ];
     }
 
-    public function inlineQuery(Request $request)
+    private function renderLatex($query)
     {
-        $query = $request->input('inline_query.query');
-
         $texfile = tmpfile();
 
         fwrite($texfile, '
 \\nonstopmode
 \documentclass{minimal}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage[active,tightpage]{preview}
 \usepackage{transparent}
 \begin{document}
@@ -38,20 +37,7 @@ class Eqxbot extends Bot
         exec("/usr/bin/pdflatex -output-directory=$directory -interaction=nonstopmode $texfilename", $output, $returncode);
 
         if ($returncode !== 0) {
-            return [
-                'method' => 'answerInlineQuery',
-
-                'inline_query_id' => $request->input('inline_query.id'),
-                'cache_time' => 300,
-                'results' => [
-                    [
-                        'type' => 'article',
-                        'id' => 'badlatex',
-                        'photo_url' => 'https://tbots.categulario.tk/latex/bad.png',
-                        'thumb_url' => 'https://tbots.categulario.tk/latex/bad.png',
-                    ],
-                ],
-            ];
+            return 'bad.png';
         }
 
         $imagedata = shell_exec("/usr/bin/convert -density 300 -quality 100 -flatten pdf:$texfilename.pdf png:-");
@@ -59,6 +45,15 @@ class Eqxbot extends Bot
         $pngname = basename($texfilename).'.png';
 
         file_put_contents(base_path().'/public/latex/'.$pngname, $imagedata);
+
+        return $pngname;
+    }
+
+    public function inlineQuery(Request $request)
+    {
+        $query = $request->input('inline_query.query');
+
+        $result = $this->renderLatex($query);
 
         return [
             'method' => 'answerInlineQuery',
@@ -68,12 +63,24 @@ class Eqxbot extends Bot
             'results' => [
                 [
                     'type' => 'photo',
-                    'id' => basename($texfilename),
-                    'photo_url' => 'https://tbots.categulario.tk/latex/'.$pngname,
-                    'thumb_url' => 'https://tbots.categulario.tk/latex/'.$pngname,
+                    'id' => $result,
+                    'photo_url' => 'https://tbots.categulario.tk/latex/'.$result,
+                    'thumb_url' => 'https://tbots.categulario.tk/latex/'.$result,
                 ],
             ],
         ];
     }
 
+    public function message(Request $request)
+    {
+        $query = $request->input('message.text');
+
+        $result = $this->renderLatex($query);
+
+        return [
+            'method'       => 'sendPhoto',
+            'chat_id'      => $request->input('message.chat.id'),
+            'photo'        => 'https://tbots.categulario.tk/latex/'.$result,
+        ];
+    }
 }
