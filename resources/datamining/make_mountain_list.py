@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import json
 import requests
 from pyquery import PyQuery as pq
